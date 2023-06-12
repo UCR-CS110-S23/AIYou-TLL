@@ -3,18 +3,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
 
-const PostsWidget = ({ userId, isProfile = false }) => {
+const PostsWidget = ({ userId, isProfile = false, searchQuery = ''  }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
-  const getPosts = async () => {
+  const getPosts = async (query) => {
     const response = await fetch("http://localhost:3001/posts", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+
+    if (query) {
+      // Filter the posts based on the search query
+      const filteredPosts = data.filter((post) =>
+          post.description.toLowerCase().includes(query.toLowerCase())
+      );
+      dispatch(setPosts({ posts: filteredPosts }));
+    } else {
+      dispatch(setPosts({ posts: data }));
+    }
   };
 
   const getUserPosts = async () => {
@@ -33,7 +42,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     if (isProfile) {
       getUserPosts();
     } else {
-      getPosts();
+      getPosts(searchQuery);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
