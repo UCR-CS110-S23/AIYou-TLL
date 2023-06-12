@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {
   Box,
   IconButton,
@@ -22,13 +22,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import { setPosts } from "state";
+
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = useSelector((state) => state.token);
   const user = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const [searchQuery, setSearchQuery] = useState('');
+
 
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -37,7 +42,36 @@ const Navbar = () => {
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
-  const fullName = `${user.firstName} ${user.lastName}`; 
+  const fullName = `${user.firstName} ${user.lastName}`;
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const response = await fetch("http://localhost:3001/posts", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+
+      if (searchQuery) {
+        // Filter the posts based on the search query
+        const filteredPosts = data.filter((post) =>
+            post.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        dispatch(setPosts({ posts: filteredPosts }));
+      } else {
+        dispatch(setPosts({ posts: data }));
+      }
+    };
+
+    getPosts();
+  }, [searchQuery, token]); // Run the effect whenever searchQuery or token changes
+
+
+  const handleSearch = async (query) => {
+    setSearchQuery(query);
+  };
+
+
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -63,9 +97,13 @@ const Navbar = () => {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." />
+            <InputBase placeholder="Search..."
+                       value={searchQuery}
+                       onChange={(e) => setSearchQuery(e.target.value)} />
             <IconButton>
-              <Search />
+              <IconButton onClick={() => handleSearch(searchQuery)}>
+                <Search />
+              </IconButton>
             </IconButton>
           </FlexBetween>
         )}
@@ -82,6 +120,7 @@ const Navbar = () => {
             )}
           </IconButton>
           <Message sx={{ fontSize: "25px" }} />
+
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
