@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import findOrCreate from "mongoose-findorcreate";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -35,11 +36,13 @@ const UserSchema = new mongoose.Schema(
     },
     location: String,
     occupation: String,
-    viewedProfile: Number,
+      githubId: String,
+      viewedProfile: Number,
     impressions: Number,
   },
   { timestamps: true }
 );
 
+UserSchema.plugin(findOrCreate);
 const User = mongoose.model("User", UserSchema);
 export default User;

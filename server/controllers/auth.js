@@ -55,3 +55,20 @@ export const login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const oauth_login = async (req, res) => {
+  try {
+    const { githubId } = req.body;
+    const user = await User.findOne({ githubId: githubId });
+    if (!user) return res.status(400).json({ msg: "User does not exist. " });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    console.log("Logging token 3")
+    console.log(token)
+    delete user.password;
+    res.status(200).json({ token, user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
