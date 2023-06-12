@@ -172,41 +172,13 @@ const Form = () => {
                     mt={2}
                 >
                   <SocialLoginButton
-                      icon={<FacebookIcon />}
-                      text="Login with Facebook"
-                      onClick={handleFacebookLogin}
-                      color="#1877f2"
-                  />
-                </Box>
-                <Box
-                    gridColumn="span 1"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    mt={2}
-                >
-                  <SocialLoginButton
                       icon={<GitHubIcon />}
                       text="Login with GitHub"
                       onClick={handleGitHubLogin}
                       color="#000000"
                   />
                 </Box>
-                <Box
-                    gridColumn="span 1"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    mt={2}
-                >
-                  <SocialLoginButton
-                      icon={<GoogleIcon />}
-                      text="Login with Google"
-                      onClick={handleGoogleLogin}
-                      color="#db4a39"
-                  />
-                </Box>
-                
+
               {isRegister && (
                     <>
                       <TextField
