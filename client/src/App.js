@@ -7,7 +7,8 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-
+import GitHubRegistrationForm from "./scenes/loginPage/GitHubRegistrationForm";
+import HandleLogin from "./scenes/controller/handlelogin";
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -25,8 +26,16 @@ function App() {
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route
+                path="/login"
+                element={<HandleLogin />}
+                />
+            <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
+            <Route
+                path="/register/github"
+                element={<GitHubRegistrationForm />} // Render the GitHubRegistrationForm component
             />
           </Routes>
         </ThemeProvider>
