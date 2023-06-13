@@ -22,6 +22,7 @@ import Post from "./models/Post.js";
 import { users, posts } from "./data/index.js";
 import passport from "passport";
 
+const uri = "mongodb+srv://deman001:emanda051599@cluster0.jjithlc.mongodb.net/";
 
 /* OAUTH STUFF*/
 initializePassport();
@@ -82,7 +83,7 @@ app.use("/posts", postRoutes);
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
