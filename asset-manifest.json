@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/AIYou-TLL/static/css/main.b62ea404.css",
+    "main.js": "/AIYou-TLL/static/js/main.3615c349.js",
+    "index.html": "/AIYou-TLL/index.html",
+    "main.b62ea404.css.map": "/AIYou-TLL/static/css/main.b62ea404.css.map",
+    "main.3615c349.js.map": "/AIYou-TLL/static/js/main.3615c349.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b62ea404.css",
+    "static/js/main.3615c349.js"
+  ]
+}
